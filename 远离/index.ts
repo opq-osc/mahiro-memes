@@ -3,9 +3,7 @@ import getImage, { getAvatar } from '../http'
 
 export default function Plugin () {
   const use: IMahiroUse = (mahiro) => {
-    const logger = mahiro.logger.withTag('远离') as typeof mahiro.logger
-
-    logger.info(`加载远离插件 ...`)
+    const logger = mahiro.logger.withTag('Memes-远离') as typeof mahiro.logger
 
     mahiro.onGroupMessage('远离', async (data) => {
       if (data?.msg?.Content?.includes('远离') && data?.msg?.AtUinLists?.length > 0) {

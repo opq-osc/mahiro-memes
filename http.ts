@@ -9,7 +9,7 @@ export default function getImage (apiPath: `/memes/${string}/`, formData: FormDa
   }
   return ky.post(`${apiHost}${apiPath}`, {
     body: formData,
-    timeout: false
+    timeout: 1000 * 180
   }).blob().then(async (res) => {
     const imageBuffer = Buffer.from(await res.arrayBuffer())
     return imageBuffer.toString('base64')

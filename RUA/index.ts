@@ -3,9 +3,7 @@ import getImage, { getAvatar } from '../http'
 
 export default function Plugin () {
   const use: IMahiroUse = (mahiro) => {
-    const logger = mahiro.logger.withTag('RUA!') as typeof mahiro.logger
-
-    logger.info(`加载RUA!插件 ...`)
+    const logger = mahiro.logger.withTag('Memes-RUA!') as typeof mahiro.logger
 
     mahiro.onGroupMessage('RUA!', async (data) => {
       if (data?.msg?.Content?.toLowerCase().includes('rua') && data.msg.AtUinLists.length > 0) {
@@ -21,8 +19,6 @@ export default function Plugin () {
         })
       }
     })
-
-    logger.success(`插件RUA!加载成功`)
   }
   return use
 }

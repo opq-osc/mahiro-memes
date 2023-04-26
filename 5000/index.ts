@@ -3,9 +3,7 @@ import getImage from '../http'
 
 export default function Plugin () {
   const use: IMahiroUse = (mahiro) => {
-    const logger = mahiro.logger.withTag('5000兆') as typeof mahiro.logger
-
-    logger.info(`加载5000兆插件 ...`)
+    const logger = mahiro.logger.withTag('Memes-5000兆') as typeof mahiro.logger
 
     mahiro.onGroupMessage('5000兆', async (data) => {
       if (data?.msg?.Content?.startsWith('5000 ')) {
@@ -32,8 +30,6 @@ export default function Plugin () {
         })
       }
     })
-
-    logger.success(`插件5000兆加载成功`)
   }
   return use
 }

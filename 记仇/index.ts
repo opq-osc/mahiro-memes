@@ -3,11 +3,7 @@ import getImage from '../http'
 
 export default function Plugin () {
   const use: IMahiroUse = (mahiro) => {
-    const logger = mahiro.logger.withTag(
-      '记仇'
-    ) as typeof mahiro.logger
-
-    logger.info(`加载记仇插件 ...`)
+    const logger = mahiro.logger.withTag('Memes-记仇') as typeof mahiro.logger
 
     mahiro.onGroupMessage('记仇', async (data) => {
       if (data?.msg?.Content?.startsWith('记仇')) {
@@ -22,8 +18,6 @@ export default function Plugin () {
         })
       }
     })
-
-    logger.success(`插件记仇加载成功`)
   }
   return use
 }

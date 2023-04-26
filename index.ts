@@ -10,6 +10,10 @@ import 远离 from './远离'
 
 export default function Plugin () {
   const use: IMahiroUse = (mahiro) => {
+    const logger = mahiro.logger.withTag('Memes') as typeof mahiro.logger
+
+    logger.info(`加载插件 Mahiro Memes...`)
+
     mahiro.use(喜悲报())
     mahiro.use(五千())
     mahiro.use(要我一直())
@@ -18,6 +22,8 @@ export default function Plugin () {
     mahiro.use(PH())
     mahiro.use(舔屏())
     mahiro.use(远离())
+
+    logger.success(`插件Mahiro Memes加载成功`)
   }
   return use
 }
