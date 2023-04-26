@@ -1,6 +1,6 @@
 import type { IMahiroUse } from 'mahiro'
 import ky from 'ky'
-import getImage from '../http'
+import getImage from '../../http'
 
 export default function Plugin () {
   const use: IMahiroUse = (mahiro) => {
