@@ -3,16 +3,21 @@
   "version": "1.0.0",
   "author": "spirit",
   "description": "mahiro && memes",
-  "main": "index.js",
-  "scripts": {},
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rimraf dist && tsc --declarationMap false",
+    "tsc:check": "tsc --noEmit"
+  },
   "keywords": [],
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "ky": "^0.33.3"
   },
   "peerDependencies": {
-    "@types/node": "^18.15.11",
-    "mahiro": "^8.0.0-canary.1",
-    "tsx": "^3.12.6"
+    "mahiro": "8.0.0-canary.1"
   }
 }
