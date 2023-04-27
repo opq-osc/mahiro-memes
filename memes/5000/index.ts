@@ -1,5 +1,5 @@
 import type { IMahiroUse } from 'mahiro'
-import getImage from '../../http'
+import getMemeImage from '../../http'
 
 export default function Plugin () {
   const use: IMahiroUse = (mahiro) => {
@@ -22,7 +22,7 @@ export default function Plugin () {
         arr.map((i) => {
           formData.append('texts', i)
         })
-        getImage('/memes/5000choyen/', formData).then((res) => {
+        getMemeImage('/memes/5000choyen/', formData).then((res) => {
           mahiro.sendGroupMessage({
             groupId: data.groupId,
             fastImage: res

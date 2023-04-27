@@ -1,14 +1,15 @@
 import type { IMahiroUse } from 'mahiro'
-import getImage from '../../http'
+import getMemeImage from '../../http'
 import ky from 'ky'
+import { trimGroupMsg } from '../../util'
 
 export default function Plugin () {
   const use: IMahiroUse = (mahiro) => {
     const logger = mahiro.logger.withTag('Memes-毒瘾发作') as typeof mahiro.logger
 
     mahiro.onGroupMessage('毒瘾发作', async (data) => {
-      if (data?.msg?.Content?.startsWith('毒瘾发作') && data?.msg?.Images?.length > 0) {
-        const content = data.msg.Content.replace('毒瘾发作', '').trim()
+      if (data?.msg?.Content?.includes('毒瘾发作') && data?.msg?.Images?.length > 0) {
+        const content = trimGroupMsg(['毒瘾发作'], data)
         const images = data.msg.Images
         const formData = new FormData()
         const image = images[0]
@@ -17,7 +18,7 @@ export default function Plugin () {
         if (!!content) {
           formData.append('texts', content)
         }
-        getImage('/memes/addiction/', formData).then((res) => {
+        getMemeImage('/memes/addiction/', formData).then((res) => {
           mahiro.sendGroupMessage({
             groupId: data.groupId,
             fastImage: res

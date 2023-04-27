@@ -1,6 +1,5 @@
 import type { IMahiroUse } from 'mahiro'
-import getImage, { getAvatar } from '../../http'
-import ky from 'ky'
+import getMemeImage, { getAvatar } from '../../http'
 
 export default function Plugin () {
   const use: IMahiroUse = (mahiro) => {
@@ -11,7 +10,7 @@ export default function Plugin () {
         const formData = new FormData()
         const avatar = await getAvatar(mahiro, data.msg.AtUinLists[0].Uin)
         formData.append('images', avatar)
-        getImage('/memes/anti_kidnap/', formData).then((res) => {
+        getMemeImage('/memes/anti_kidnap/', formData).then((res) => {
           mahiro.sendGroupMessage({
             groupId: data.groupId,
             fastImage: res

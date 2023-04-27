@@ -1,20 +1,21 @@
 import type { IMahiroUse } from 'mahiro'
-import getImage from '../../http'
+import getMemeImage from '../../http'
 import ky from 'ky'
+import { trimGroupMsg } from '../../util'
 
 export default function Plugin () {
   const use: IMahiroUse = (mahiro) => {
     const logger = mahiro.logger.withTag('Memes-升天') as typeof mahiro.logger
 
     mahiro.onGroupMessage('升天', async (data) => {
-      if (data?.msg?.Content?.startsWith('升天')) {
-        const content = data.msg.Content.replace('升天', '').trim()
+      if (data?.msg?.Content?.includes('升天')) {
+        const content = trimGroupMsg(['升天'], data)
         if (!!!content) {
           return
         }
         const formData = new FormData()
         formData.append('texts', content)
-        getImage('/memes/ascension/', formData).then((res) => {
+        getMemeImage('/memes/ascension/', formData).then((res) => {
           mahiro.sendGroupMessage({
             groupId: data.groupId,
             fastImage: res

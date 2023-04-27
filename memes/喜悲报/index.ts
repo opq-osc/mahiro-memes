@@ -1,5 +1,5 @@
 import type { IMahiroUse } from 'mahiro'
-import getImage from '../../http'
+import getMemeImage from '../../http'
 
 export default function Plugin () {
   const use: IMahiroUse = (mahiro) => {
@@ -10,7 +10,7 @@ export default function Plugin () {
         const content = data.msg.Content.replace('喜报', '').trim()
         const formData = new FormData()
         formData.append('texts', content)
-        getImage('/memes/good_news/', formData).then((res) => {
+        getMemeImage('/memes/good_news/', formData).then((res) => {
           mahiro.sendGroupMessage({
             groupId: data.groupId,
             fastImage: res
@@ -22,7 +22,7 @@ export default function Plugin () {
         const content = data.msg.Content.replace('悲报', '').trim()
         const formData = new FormData()
         formData.append('texts', content)
-        getImage('/memes/bad_news/', formData).then((res) => {
+        getMemeImage('/memes/bad_news/', formData).then((res) => {
           mahiro.sendGroupMessage({
             groupId: data.groupId,
             fastImage: res
