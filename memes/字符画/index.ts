@@ -6,8 +6,7 @@ export default function Plugin () {
     const logger = mahiro.logger.withTag('Memes-字符画') as typeof mahiro.logger
 
     mahiro.onGroupMessage('字符画', async (data) => {
-      if (data?.msg?.Content?.startsWith('字符画') && (data?.msg?.Images?.length > 0 || data?.msg?.AtUinLists?.length > 0)) {
-        const images = data.msg.Images
+      if (data?.msg?.Content?.includes('字符画') && (data?.msg?.Images?.length > 0 || data?.msg?.AtUinLists?.length > 0)) {
         const formData = new FormData()
         const imageData = await getImage(mahiro, data)
         formData.append('images', imageData)

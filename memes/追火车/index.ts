@@ -6,7 +6,7 @@ export default function Plugin () {
     const logger = mahiro.logger.withTag('Memes-追火车') as typeof mahiro.logger
 
     mahiro.onGroupMessage('追火车', async (data) => {
-      if (data?.msg?.Content === '追火车' && (data?.msg?.Images?.length > 0 || data?.msg?.AtUinLists?.length > 0)) {
+      if (data?.msg?.Content.includes('追火车') && (data?.msg?.Images?.length > 0 || data?.msg?.AtUinLists?.length > 0)) {
         const formData = new FormData()
         const imageData = await getImage(mahiro, data)
         formData.append('images', imageData)

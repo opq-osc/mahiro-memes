@@ -6,7 +6,7 @@ export default function Plugin () {
     const logger = mahiro.logger.withTag('Memes-迷惑') as typeof mahiro.logger
 
     mahiro.onGroupMessage('迷惑', async (data) => {
-      if (data?.msg?.Content === '迷惑' && (data?.msg?.Images?.length > 0 || data?.msg?.AtUinLists?.length > 0)) {
+      if (data?.msg?.Content.includes('迷惑') && (data?.msg?.Images?.length > 0 || data?.msg?.AtUinLists?.length > 0)) {
         const formData = new FormData()
         const imageData = await getImage(mahiro, data)
         formData.append('images', imageData)

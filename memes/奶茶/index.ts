@@ -6,7 +6,7 @@ export default function Plugin () {
     const logger = mahiro.logger.withTag('Memes-奶茶') as typeof mahiro.logger
 
     mahiro.onGroupMessage('奶茶', async (data) => {
-      if (/^[喝]{,1}奶茶/.test(data?.msg?.Content) && data?.msg?.Images?.length > 0) {
+      if (/^[喝]{0,1}奶茶/.test(data?.msg?.Content) && data?.msg?.AtUinLists?.length > 0) {
         const formData = new FormData()
         const imageData = await getAvatar(mahiro, data.userId)
         formData.append('images', imageData)

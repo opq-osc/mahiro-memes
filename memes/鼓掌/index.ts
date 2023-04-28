@@ -11,7 +11,7 @@ export default function Plugin () {
         const formData = new FormData()
         const imageData = await getAvatar(mahiro, data.userId)
         formData.append('images', imageData)
-        getMemeImage('/memes/alike/', formData).then((res) => {
+        getMemeImage('/memes/applaud/', formData).then((res) => {
           mahiro.sendGroupMessage({
             groupId: data.groupId,
             fastImage: res
