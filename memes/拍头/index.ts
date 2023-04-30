@@ -7,7 +7,7 @@ export default function Plugin () {
     const logger = mahiro.logger.withTag('Memes-拍头') as typeof mahiro.logger
 
     mahiro.onGroupMessage('拍头', async (data) => {
-      if (data?.msg?.Content?.includes('拍头') && data.msg.AtUinLists.length > 0) {
+      if (data?.msg?.Content?.includes('拍头') && data?.msg?.AtUinLists?.length > 0) {
         const content = trimGroupMsg(['拍头'], data)
         const target = data.msg.AtUinLists[0].Uin
         const avatar = await getAvatar(mahiro, target)

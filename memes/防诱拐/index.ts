@@ -6,7 +6,7 @@ export default function Plugin () {
     const logger = mahiro.logger.withTag('Memes-防诱拐') as typeof mahiro.logger
 
     mahiro.onGroupMessage('防诱拐', async (data) => {
-      if (data?.msg?.Content?.startsWith('防诱拐') && data?.msg?.AtUinLists?.length > 0) {
+      if (data?.msg?.Content?.includes('防诱拐') && data?.msg?.AtUinLists?.length > 0) {
         const formData = new FormData()
         const avatar = await getAvatar(mahiro, data.msg.AtUinLists[0].Uin)
         formData.append('images', avatar)
