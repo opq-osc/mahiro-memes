@@ -20,13 +20,13 @@ interface memeInfo {
 
 interface pluginConfig {
   /**
-   * api地址，默认为 http://127.0.0.1:2233/
+   * api地址，默认为 http://127.0.0.1:2233
    */
   apiHost?: string
 }
 
 export default function Plugin (config?: pluginConfig) {
-  const { apiHost = 'http://127.0.0.1:2233/' } = config
+  const { apiHost = 'http://127.0.0.1:2233' } = config || {}
   const use: IMahiroUse = async (mahiro) => {
     const logger = mahiro.logger.withTag('Memes') as typeof mahiro.logger
     logger.info(`加载插件 Mahiro Memes...`)
@@ -46,6 +46,7 @@ export default function Plugin (config?: pluginConfig) {
       })
     } catch (error) {
       logger.error(`插件Mahiro Memes加载失败`, error)
+      return
     }
 
 
