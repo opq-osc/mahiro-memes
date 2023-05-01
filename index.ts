@@ -111,6 +111,10 @@ export default function Plugin () {
         if (meme.params.min_images > 0) {
           // 图片来源为图片消息或头像
           if (data?.msg?.Images?.length >= meme.params.min_images || data?.msg?.AtUinLists?.length >= meme.params.min_images) {
+            // 防误触
+            if (curKeyword.length === 1 && content !== '') {
+              return
+            }
             let imgDataArr = await getImages(mahiro, data)
             if (imgDataArr.length < meme.params.min_images) {
               return
@@ -121,6 +125,7 @@ export default function Plugin () {
             }
             // 没有就拿头像
           } else {
+            // 防误触
             if (curKeyword.length > 1 && meme.params.min_images === 1 && content === curKeyword) {
               const imgData = await getAvatar(mahiro, data.userId)
               formData.append('images', imgData)
@@ -130,8 +135,13 @@ export default function Plugin () {
           }
         }
         // 需要文字
-        if (meme.params.default_texts.some((i) => i.includes(curKeyword))) {
+        const defaultTextContainKeyword = meme.params.default_texts.some((i) => i !== curKeyword && i.includes(curKeyword))
+        const contentContainOtherKeywords = meme.keywords.some((i) => i !== curKeyword && data.msg.Content.includes(i))
+        if (defaultTextContainKeyword || contentContainOtherKeywords) {
           content = trimGroupMsg(keywords, data, false)
+          if (contentContainOtherKeywords) {
+            content = content.replace(curKeyword, '').trim()
+          }
         }
         if (meme.params.min_texts === meme.params.max_texts) {
           if (meme.params.min_texts === 1) {
