@@ -1,9 +1,8 @@
 import type { IGroupMessage, Mahiro } from 'mahiro'
 
-import { apiHost } from './config'
 import ky from 'ky'
 
-export default function getMemeImage (apiPath: `/memes/${string}/`, formData: FormData, args?: object) {
+export default function getMemeImage (apiHost: string, apiPath: `/memes/${string}/`, formData: FormData, args?: object) {
   if (!!args) {
     formData.append('args', JSON.stringify(args))
   }

@@ -1,7 +1,6 @@
 import getMemeImage, { getAvatar, getImages } from './http'
 
 import type { IMahiroUse } from 'mahiro'
-import { apiHost } from './config'
 import ky from 'ky'
 import { trimGroupMsg } from './util'
 
@@ -19,7 +18,15 @@ interface memeInfo {
   }
 }
 
-export default function Plugin () {
+interface pluginConfig {
+  /**
+   * api地址，默认为 http://127.0.0.1:2233/
+   */
+  apiHost?: string
+}
+
+export default function Plugin (config: pluginConfig) {
+  const { apiHost = 'http://127.0.0.1:2233/' } = config
   const use: IMahiroUse = async (mahiro) => {
     const logger = mahiro.logger.withTag('Memes') as typeof mahiro.logger
     logger.info(`加载插件 Mahiro Memes...`)
@@ -166,7 +173,7 @@ export default function Plugin () {
           }
         }
         if (formData.has('texts') || formData.has('images')) {
-          getMemeImage(`/memes/${meme.key}/`, formData, args).then((res) => {
+          getMemeImage(apiHost, `/memes/${meme.key}/`, formData, args).then((res) => {
             mahiro.sendGroupMessage({
               groupId: data.groupId,
               fastImage: res

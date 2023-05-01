@@ -12,14 +12,14 @@
 ### 安装插件依赖
 
 ```bash
-pnpm add ky
+pnpm add ky mahiro-memes
 ```
 
 ### 加载插件
 
 ```typescript
 ...
-import memes from './mahiro-memes'
+import memes from 'mahiro-memes'
 
 ...
 mahiro.use(memes())
