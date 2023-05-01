@@ -25,7 +25,7 @@ interface pluginConfig {
   apiHost?: string
 }
 
-export default function Plugin (config: pluginConfig) {
+export default function Plugin (config?: pluginConfig) {
   const { apiHost = 'http://127.0.0.1:2233/' } = config
   const use: IMahiroUse = async (mahiro) => {
     const logger = mahiro.logger.withTag('Memes') as typeof mahiro.logger
