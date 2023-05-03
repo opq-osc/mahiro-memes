@@ -23,6 +23,10 @@ interface pluginConfig {
    * api地址，默认为 http://127.0.0.1:2233
    */
   apiHost?: string
+  /**
+   * 屏蔽的memes，填写meme的key
+   */
+  blockMemes?: string[]
 }
 
 const memesFallbackUserNick = ['always_like', 'follow']
@@ -30,23 +34,23 @@ const memesMatchKeyStart = ['ascension', 'bad_news', 'bronya_holdsign', 'chanshe
   'dont_touch', 'douyin', 'fanatic', 'find_chips', 'good_news', 'google', 'hold_grudge', 'imprison', 'keep_away', 'luoyonghao_say',
   'luxun_say', 'meteor', 'murmur', 'pornhub', 'psyduck', 'raise_sign', 'repeat', 'run', 'scratchcard', 'scroll', 'together', 'universal',
   'weisuoyuwei', 'worship', 'youtube']
-const memesMatchKeyAll = ['alike', 'always', 'anti_kidnap', 'applaud', 'ask', 'bite', 'blood_pressure', 'bocchi_draft',
-  'charpic', 'confuse', 'cyan', 'need', 'pat', 'perfect', 'petpet', 'play', 'police1', 'potato', 'pound', 'printing', 'prpr', 'punch',
-  'read_book', 'rip', 'rip_angrily', 'rise_dead', 'roll', 'rub', 'scratch_head', 'shock', 'smash', 'step_on', 'suck', 'symmetric',
-  'think_what', 'throw', 'throw_gif', 'thump', 'thump_wildly', 'tightly', 'trance', 'turn', 'twist', 'wallpaper', 'wave', 'wooden_fish']
 
 export default function Plugin (config?: pluginConfig) {
-  const { apiHost = 'http://127.0.0.1:2233' } = config || {}
+  const {
+    apiHost = 'http://127.0.0.1:2233',
+    blockMemes = []
+  } = config || {}
   const use: IMahiroUse = async (mahiro) => {
     const logger = mahiro.logger.withTag('Memes') as typeof mahiro.logger
     logger.info(`加载插件 Mahiro Memes...`)
 
+    logger.info(`被屏蔽的Memes：${blockMemes.join(',')}`)
     const memeArr = [] as memeInfo[]
     let keywords = [] as string[]
 
     try {
       const memes = await ky(`${apiHost}/memes/keys`).json<string[]>()
-      memes.map((item) => {
+      memes.filter((i) => !blockMemes.includes(i)).map((item) => {
         ky(`${apiHost}/memes/${item}/info`).json<memeInfo>().then((res) => {
           memeArr.push(res)
           keywords = keywords.concat(res.keywords)
@@ -89,13 +93,13 @@ export default function Plugin (config?: pluginConfig) {
         const filters = memeArr.filter((i) => i.keywords.some((j) => {
           const match = data.msg.Content.toLowerCase().includes(j)
           if (match) {
+            curKeyword = j
             if (memesMatchKeyStart.includes(i.key)) {
               return data.msg.Content.toLowerCase().startsWith(j)
             }
-            if (memesMatchKeyAll.includes(i.key)) {
+            if (i.params.max_texts === 0) {
               return trimGroupMsg(keywords, data, true) === j
             }
-            curKeyword = j
           }
           return match
         }))
