@@ -25,6 +25,16 @@ interface pluginConfig {
   apiHost?: string
 }
 
+const memesFallbackUserNick = ['always_like', 'follow']
+const memesMatchKeyStart = ['ascension', 'bad_news', 'bronya_holdsign', 'chanshenzi', 'dianzhongdian', 'dont_go_near',
+  'dont_touch', 'douyin', 'fanatic', 'find_chips', 'good_news', 'google', 'hold_grudge', 'imprison', 'keep_away', 'luoyonghao_say',
+  'luxun_say', 'meteor', 'murmur', 'pornhub', 'psyduck', 'raise_sign', 'repeat', 'run', 'scratchcard', 'scroll', 'together', 'universal',
+  'weisuoyuwei', 'worship', 'youtube']
+const memesMatchKeyAll = ['alike', 'always', 'anti_kidnap', 'applaud', 'ask', 'bite', 'blood_pressure', 'bocchi_draft',
+  'charpic', 'confuse', 'cyan', 'need', 'pat', 'perfect', 'petpet', 'play', 'police1', 'potato', 'pound', 'printing', 'prpr', 'punch',
+  'read_book', 'rip', 'rip_angrily', 'rise_dead', 'roll', 'rub', 'scratch_head', 'shock', 'smash', 'step_on', 'suck', 'symmetric',
+  'think_what', 'throw', 'throw_gif', 'thump', 'thump_wildly', 'tightly', 'trance', 'turn', 'twist', 'wallpaper', 'wave', 'wooden_fish']
+
 export default function Plugin (config?: pluginConfig) {
   const { apiHost = 'http://127.0.0.1:2233' } = config || {}
   const use: IMahiroUse = async (mahiro) => {
@@ -79,6 +89,12 @@ export default function Plugin (config?: pluginConfig) {
         const filters = memeArr.filter((i) => i.keywords.some((j) => {
           const match = data.msg.Content.toLowerCase().includes(j)
           if (match) {
+            if (memesMatchKeyStart.includes(i.key)) {
+              return data.msg.Content.toLowerCase().startsWith(j)
+            }
+            if (memesMatchKeyAll.includes(i.key)) {
+              return trimGroupMsg(keywords, data, true) === j
+            }
             curKeyword = j
           }
           return match
@@ -93,9 +109,13 @@ export default function Plugin (config?: pluginConfig) {
             timeout: 1000 * 180
           }).blob().then(async (res) => {
             const imageBuffer = Buffer.from(await res.arrayBuffer())
-            let str = ''
+            let str = `关键词：${meme.keywords.join('、')}\n`
             if (meme.params.min_texts > 0) {
-              str += `至少需要${meme.params.min_texts}段文字，以空格分隔\n`
+              if (meme.params.min_texts === 1) {
+                str += `至少需要1段文字\n`
+              } else {
+                str += `至少需要${meme.params.min_texts}段文字，以空格分隔\n`
+              }
             }
             if (meme.params.min_images > 0) {
               str += `至少需要${meme.params.min_images}张图片或@${meme.params.min_images}个人`
@@ -108,7 +128,7 @@ export default function Plugin (config?: pluginConfig) {
               }
             })
           }).catch((err) => {
-            logger.warn('获取meme失败', err)
+            logger.error(`获取meme [${meme.key}]失败`, err)
           })
           return
         }
@@ -119,10 +139,6 @@ export default function Plugin (config?: pluginConfig) {
         if (meme.params.min_images > 0) {
           // 图片来源为图片消息或头像
           if (data?.msg?.Images?.length >= meme.params.min_images || data?.msg?.AtUinLists?.length >= meme.params.min_images) {
-            // 防误触
-            if (curKeyword.length === 1 && content !== '') {
-              return
-            }
             let imgDataArr = await getImages(mahiro, data)
             if (imgDataArr.length < meme.params.min_images) {
               return
@@ -131,10 +147,18 @@ export default function Plugin (config?: pluginConfig) {
             for (const item of imgDataArr) {
               formData.append('images', item)
             }
+          } else if (((data?.msg?.Images?.length === 1 || data?.msg?.AtUinLists?.length === 1) && meme.params.min_images === 2)) {
+            const imgData = await getAvatar(mahiro, data.userId)
+            formData.append('images', imgData)
+            const imgDataArr = await getImages(mahiro, data)
+            if (imgDataArr.length !== 1) {
+              return
+            }
+            formData.append('images', imgDataArr[0])
             // 没有就拿头像
           } else {
             // 防误触
-            if (curKeyword.length > 1 && meme.params.min_images === 1 && content === curKeyword) {
+            if (meme.params.min_images === 1) {
               const imgData = await getAvatar(mahiro, data.userId)
               formData.append('images', imgData)
             } else {
@@ -151,6 +175,9 @@ export default function Plugin (config?: pluginConfig) {
             content = content.replace(curKeyword, '').trim()
           }
         }
+        if (content === '' && meme.params.min_texts > 0) {
+          return
+        }
         if (meme.params.min_texts === meme.params.max_texts) {
           if (meme.params.min_texts === 1) {
             formData.append('texts', content)
@@ -166,6 +193,11 @@ export default function Plugin (config?: pluginConfig) {
             formData.append('texts', i)
           })
         }
+        if (formData.getAll('texts').length === 0 && memesFallbackUserNick.includes(meme.key)) {
+          if (data?.msg?.AtUinLists?.length > 0) {
+            formData.append('texts', data.msg.AtUinLists[0].Nick)
+          }
+        }
         // 需要参数
         if (meme.params.args.length > 0) {
           const memeArgs = meme.params.args[0]
@@ -180,7 +212,7 @@ export default function Plugin (config?: pluginConfig) {
               fastImage: res
             })
           }).catch((err) => {
-            logger.warn('获取meme失败', formData, args, err)
+            logger.error(`获取meme [${meme.key}]失败`, formData, args, err)
           })
         }
       }
