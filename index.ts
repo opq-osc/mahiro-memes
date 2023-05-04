@@ -30,10 +30,10 @@ interface pluginConfig {
 }
 
 const memesFallbackUserNick = ['always_like', 'follow']
-const memesMatchKeyStart = ['ascension', 'bad_news', 'bronya_holdsign', 'chanshenzi', 'dianzhongdian', 'dont_go_near',
-  'dont_touch', 'douyin', 'fanatic', 'find_chips', 'good_news', 'google', 'hold_grudge', 'imprison', 'keep_away', 'luoyonghao_say',
-  'luxun_say', 'meteor', 'murmur', 'pornhub', 'psyduck', 'raise_sign', 'repeat', 'run', 'scratchcard', 'scroll', 'together', 'universal',
-  'weisuoyuwei', 'worship', 'youtube']
+const memesMatchKeyStart = ['always_like', 'ascension', 'bad_news', 'bronya_holdsign', 'chanshenzi', 'dianzhongdian', 'dont_go_near',
+  'dont_touch', 'douyin', 'fanatic', 'follow', 'find_chips', 'good_news', 'google', 'hold_grudge', 'imprison', 'keep_away',
+  'luoyonghao_say', 'luxun_say', 'meteor', 'murmur', 'nokia', 'pornhub', 'psyduck', 'raise_sign', 'repeat', 'run',
+  'scratchcard', 'scroll', 'together', 'universal', 'weisuoyuwei', 'worship', 'youtube']
 
 export default function Plugin (config?: pluginConfig) {
   const {
@@ -98,7 +98,7 @@ export default function Plugin (config?: pluginConfig) {
               return data.msg.Content.toLowerCase().startsWith(j)
             }
             if (i.params.max_texts === 0) {
-              return trimGroupMsg(keywords, data, true) === j
+              return trimGroupMsg(keywords, data, false) === j
             }
           }
           return match
