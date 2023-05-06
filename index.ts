@@ -29,8 +29,8 @@ interface pluginConfig {
   blockMemes?: string[]
 }
 
-const memesFallbackUserNick = ['always_like', 'follow']
-const memesMatchKeyStart = ['always_like', 'ascension', 'bad_news', 'bronya_holdsign', 'chanshenzi', 'dianzhongdian', 'dont_go_near',
+const memesFallbackUserNick = ['always_like', 'ask', 'follow']
+const memesMatchKeyStart = ['always_like', 'ascension', 'ask', 'bad_news', 'bronya_holdsign', 'chanshenzi', 'dianzhongdian', 'dont_go_near',
   'dont_touch', 'douyin', 'fanatic', 'follow', 'find_chips', 'good_news', 'google', 'hold_grudge', 'imprison', 'keep_away',
   'luoyonghao_say', 'luxun_say', 'meteor', 'murmur', 'nokia', 'pornhub', 'psyduck', 'raise_sign', 'repeat', 'run',
   'scratchcard', 'scroll', 'together', 'universal', 'weisuoyuwei', 'worship', 'youtube']

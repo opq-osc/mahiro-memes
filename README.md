@@ -25,3 +25,7 @@ import memes from 'mahiro-memes'
 mahiro.use(memes())
 ...
 ```
+
+### 使用插件
+
+私聊或在群里发送「meme帮助」获得帮助
