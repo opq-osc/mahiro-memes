@@ -1,6 +1,6 @@
 {
   "name": "mahiro-memes",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "author": "spirit",
   "description": "mahiro && memes",
   "files": [
@@ -18,6 +18,6 @@
     "ky": "^0.33.3"
   },
   "peerDependencies": {
-    "mahiro": "^10.0.0"
+    "mahiro": "*"
   }
 }
