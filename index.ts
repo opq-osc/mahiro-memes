@@ -29,10 +29,10 @@ interface pluginConfig {
   blockMemes?: string[]
 }
 
-const memesFallbackUserNick = ['always_like', 'ask', 'follow']
+const memesFallbackUserNick = ['always_like', 'ask', 'follow', 'my_friend']
 const memesMatchKeyStart = ['always_like', 'ascension', 'ask', 'bad_news', 'bronya_holdsign', 'chanshenzi', 'dianzhongdian', 'dont_go_near',
   'dont_touch', 'douyin', 'fanatic', 'follow', 'find_chips', 'good_news', 'google', 'hold_grudge', 'imprison', 'keep_away',
-  'luoyonghao_say', 'luxun_say', 'meteor', 'murmur', 'nokia', 'pornhub', 'psyduck', 'raise_sign', 'repeat', 'run',
+  'luoyonghao_say', 'luxun_say', 'meteor', 'murmur', 'nokia', 'play_game', 'pornhub', 'psyduck', 'raise_sign', 'repeat', 'run',
   'scratchcard', 'scroll', 'together', 'universal', 'weisuoyuwei', 'worship', 'youtube']
 
 export default function Plugin (config?: pluginConfig) {
